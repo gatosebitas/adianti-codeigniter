@@ -1,0 +1,4 @@
+AuthUserFile ./uploads/
+AuthType Basic
+AuthName "restricted area"
+require valid-user
