@@ -9,7 +9,12 @@
 	</script>
 	<link rel="stylesheet" href="<?php echo base_url('media/css/estilos.css') ?>">
 
-
+	<script>
+		var variableJS = "0S2A1430.jpg";
+	</script>
+	<script>
+		var Var_JavaScript = "0S2A1430.jpg"; // declaración de la variable 
+	</script>
 </head>
 
 
@@ -359,42 +364,9 @@
 							var parametros = {
 								"id": id
 							};
-							var site = "<?php echo site_url('Welcome/cargar_imagenes/' . $proyecto->id); ?>";
+							var site = "<?php echo site_url('Welcome/cargar_imagenes/'); ?>" + id;
 
-							$.ajax({
-								data: parametros, //datos que se envian a traves de ajax
-								url: site, //archivo que recibe la peticion
-								type: 'post', //método de envio
-								dataType: 'json',
-								beforeSend: function() {
-									//$(imgpub).html('<progress class="progress is-danger" max="100"></progress>');
-								},
-								success: function(response) {
-									//una vez que el archivo recibe el request lo procesa y lo devuelve
-									//$(resultado).html("Procesando, espere por favor...");
-
-								},
-								statusCode: {
-									500: function(response) {
-										$(imgpub).html("Error 500");
-									},
-
-									200: function(response) {
-										//location.reload();
-										$(imgpub).html("Procesando, espere por favor...");
-										$rpt = '';
-										$.each(response.data, function(index, elemento) {
-
-											$rpt = $rpt.
-											'<img class="mySlides" src="http://localhost/proyectos_vri/' +
-											elemento.resumen + '">';
-											$(imgpub).html($rpt);
-										});
-
-
-									}
-								}
-							});
+							$(imgpub).html("id");
 						}
 					</script>
 
@@ -424,9 +396,8 @@
 										</div>
 
 										<span class="tag is-white">
-											<!-- href="#popup2"   -->
-											<!-- onclick="get_imagenes(<?php echo $proyecto->id; ?>);" -->
-											<a id="btn-abrir-popup" onclick="get_imagenes(<?php echo $proyecto->id; ?>);">
+											
+											<a onclick="final(<?php echo $proyecto->id; ?>);">
 												Ver fotos
 											</a>
 										</span>
@@ -436,10 +407,7 @@
 											<a href="#popup2">Ver videos</a>
 										</span>
 
-										<span class="tag is-white">
-
-											<a href="#popup3">ALTERNATIVO</a>
-										</span>
+										
 
 										<span class="tag is-white">
 											<a onclick="get_resumen(<?php echo $proyecto->id; ?>);">
@@ -523,32 +491,14 @@
 	<!-- POP UP IMAGENES -->
 	<div class="overlay" id="overlay">
 		<div class="popup" id="popup">
-			<a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
-			<div id="imgpub" class="w3-content w3-display-container">
-				<?php TTransaction::open('database');
-
-
-
-				$conn = TTransaction::get(); // get PDO connection
-
-				// run query
-				$repository = new TRepository('ViewMedia');
-				$criteria = new TCriteria;
-				$criteria->add(new TFilter('id_publication', '=', 17));
-				$criteria->add(new TFilter('type', '=', 'jpg'));
-				$recursos = $repository->load($criteria);
-
-				foreach ($recursos as $recurso) {
-					//echo $recurso->path;
-					echo '<img class="mySlides" src="http://localhost/proyectos_vri/uploads/' . $recurso->path . '" alt="">';
-				}
-				TTransaction::close();	?>
+			<a onclick="cerrar()" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+			<div id="imgpub">
 
 
 			</div>
 
-			<button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-			<button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+			<button class="w3-button w3-black w3-display-left" onclick="plusSlides(-1)">&#10094;</button>
+			<button class="w3-button w3-black w3-display-right" onclick="plusSlides(1)">&#10095;</button>
 		</div>
 	</div>
 
@@ -573,39 +523,6 @@
 		</div>
 	</div>
 
-	<!-- POPUP ALTERNATIVO -->
-
-	<div id="popup3" class="overlay2">
-
-		<div id="popupBody2">
-			<a id="cerrar" href="#">&times;</a>
-
-
-			<div class="popupContent">
-				<h1>aalgpo</h1>
-				<div class="mySlides fade">
-
-					<img src="https://images.unsplash.com/photo-1446770145316-10a05382c470?dpr=1&auto=format&fit=crop&w=900&h=450&q=80&cs=tinysrgb&crop=" alt="">
-				</div>
-				<div class="mySlides fade">
-					<img  src="https://images.unsplash.com/photo-1455717974081-0436a066bb96?dpr=1&auto=format&fit=crop&w=900&h=450&q=80&cs=tinysrgb&crop=" alt="">
-				</div>
-				<div class="mySlides fade">
-					<img  src="https://images.unsplash.com/photo-1477420086945-b99c643e8a3d?dpr=1&auto=format&fit=crop&w=900&h=450&q=80&cs=tinysrgb&crop=" alt="">
-
-				</div>
-				<!-- <div class="fade">
-					<img src="https://images.unsplash.com/photo-1455717974081-0436a066bb96?dpr=1&auto=format&fit=crop&w=900&h=450&q=80&cs=tinysrgb&crop=" style="width:100%">
-				</div>
-				<div class=" fade">
-					<img src="https://images.unsplash.com/photo-1477420086945-b99c643e8a3d?dpr=1&auto=format&fit=crop&w=900&h=450&q=80&cs=tinysrgb&crop=" style="width:100%">
-				</div> -->
-				<button class="w3-button w3-black w3-display-left" onclick="plusSlides(-1)">&#10094;</button>
-				<button class="w3-button w3-black w3-display-right" onclick="plusSlides(1)">&#10095;</button>
-
-			</div>
-		</div>
-	</div>
 
 	<script>
 		var btnAbrirPopup = document.getElementById('btn-abrir-popup'),
@@ -614,8 +531,8 @@
 			btnCerrarPopup = document.getElementById('btn-cerrar-popup');
 
 		btnAbrirPopup.addEventListener('click', function() {
-			overlay.classList.add('active');
-			popup.classList.add('active');
+			// overlay.classList.add('active');
+			// popup.classList.add('active');
 			//get_imagenes(17);
 
 
@@ -630,16 +547,61 @@
 			popup.classList.remove('active');
 		});
 
+		function cerrar(){
+			overlay.classList.remove('active');
+			popup.classList.remove('active');
+		}
+		function final(id) {
+
+
+			//$(imgpub).html('adlflkfdfjd');
+
+			var resultado = "#response_" + id;
+			var parametros = {
+				"id": id
+			};
+			var site = "<?php echo site_url('Welcome/cargar_imagenes/'); ?>" + id;
+			var resp = "";
+			$.ajax({
+				data: parametros, //datos que se envian a traves de ajax
+				url: site, //archivo que recibe la peticion
+				type: 'post', //método de envio
+				dataType: 'json',
+				beforeSend: function() {
+					$(resultado).html('<progress class="progress is-danger" max="100"></progress>');
+				},
+				success: function(response) {
+					//una vez que el archivo recibe el request lo procesa y lo devuelve
+					//$(resultado).html("Procesando, espere por favor...");
+				},
+				statusCode: {
+					500: function(response) {
+						$(resultado).html("Error 500");
+					},
+
+					200: function(response) {
+						//location.reload();
+						$(resultado).html("Procesando, espere por favor...");
+
+						$.each(response.data, function(index, elemento) {
+							resp = resp + '<div class="mySlides fade"><img  src="http://localhost/proyectos_vri/uploads/' + response.data[index].resumen + '"> </div>';
+						});
+						$(imgpub).html(resp);
+						overlay.classList.add('active');
+						popup.classList.add('active');
+						plusSlides(1);
+					}
+				}
+			});
+
+
+		}
 
 		function modalClose() {
 			if (location.hash == '#popup2') {
 				location.hash = '';
 			}
-			var overlay = document.getElementById('overlay'),
-				popup = document.getElementById('popup');
-
-			overlay.classList.remove('active');
-			popup.classList.remove('active');
+			cerrar();
 
 		}
 
@@ -647,10 +609,11 @@
 		document.addEventListener('keyup', function(e) {
 			if (e.keyCode == 27) {
 				modalClose();
+				
 			}
 		});
 
-		var modal = document.querySelector('#popup2');
+		var modal = document.querySelector('#popup');
 
 		// Handle click on the modal container
 		modal.addEventListener('click', modalClose, false);
@@ -670,27 +633,7 @@
 			e.stopPropagation();
 		}, false);
 
-		// var slideIndex = 1;
-		// showDivs(slideIndex);
-
-		// function plusDivs(n) {
-		// 	showDivs(slideIndex += n);
-		// }
-
-		// function showDivs(n) {
-		// 	var i;
-		// 	var x = document.getElementsByClassName("mySlides");
-		// 	if (n > x.length) {
-		// 		slideIndex = 1
-		// 	}
-		// 	if (n < 1) {
-		// 		slideIndex = x.length
-		// 	}
-		// 	for (i = 0; i < x.length; i++) {
-		// 		x[i].style.display = "none";
-		// 	}
-		// 	x[slideIndex - 1].style.display = "block";
-		// }
+		
 	</script>
 	<script>
 		var slideIndex = 1;
