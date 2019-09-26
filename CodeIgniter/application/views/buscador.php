@@ -396,7 +396,7 @@
 										</div>
 
 										<span class="tag is-white">
-											
+
 											<a onclick="final(<?php echo $proyecto->id; ?>);">
 												Ver fotos
 											</a>
@@ -407,7 +407,7 @@
 											<a href="#popup2">Ver videos</a>
 										</span>
 
-										
+
 
 										<span class="tag is-white">
 											<a onclick="get_resumen(<?php echo $proyecto->id; ?>);">
@@ -547,10 +547,11 @@
 			popup.classList.remove('active');
 		});
 
-		function cerrar(){
+		function cerrar() {
 			overlay.classList.remove('active');
 			popup.classList.remove('active');
 		}
+
 		function final(id) {
 
 
@@ -604,12 +605,21 @@
 			cerrar();
 
 		}
-
+	</script>
+	<script>
 		// Handle ESC key (key code 27)
+		var overlay = document.getElementById('overlay'),
+			popup = document.getElementById('popup');
+		popup2 = document.getElementById('popup2');
+
 		document.addEventListener('keyup', function(e) {
 			if (e.keyCode == 27) {
-				modalClose();
-				
+
+				overlay.classList.remove('active');
+				popup.classList.remove('active');
+				if (location.hash == '#popup2') {
+					location.hash = '';
+				}
 			}
 		});
 
@@ -633,9 +643,19 @@
 			e.stopPropagation();
 		}, false);
 
-		
-	</script>
-	<script>
+		var modal3 = document.querySelector('#popup2');
+
+		// Handle click on the modal container
+		modal3.addEventListener('click', modalClose, false);
+
+		// Prevent event bubbling if click occurred within modal content body
+		modal3.children[0].addEventListener('click', function(e) {
+			e.stopPropagation();
+		}, false);
+
+
+
+
 		var slideIndex = 1;
 		showSlides(slideIndex);
 
