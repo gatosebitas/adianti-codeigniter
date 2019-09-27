@@ -391,4 +391,55 @@ class Welcome extends CI_Controller
 
 		exit;
 	}
+
+
+	public function cargar_videos($slug = FALSE)
+	{
+		header('Content-Type: application/json');
+
+		$json = array();
+
+		if ($slug != FALSE && is_scalar($slug)) {
+			try {
+				// open a transaction with database 'database'
+				TTransaction::open('database');
+
+				// creates a repository for BlogCategoria
+
+				$proyecto = new ViewMedia($slug);
+
+				$conn          = TTransaction::get(); // get PDO connection
+
+				// run query
+				$repository      = new TRepository('ViewMedia');
+				$criteria        = new TCriteria;
+				$criteria->add(new TFilter('id_publication', '=', $slug));
+				$criteria->add(new TFilter('type', '=', 'mp4'));
+				$recursos = $repository->load($criteria);
+				$i = 0;
+				foreach ($recursos as $recurso) {
+					$json['data'][$i]['video'] = $recurso->path;
+					$i++;
+				}
+				//$json['data'][]['resumen'] = $proyecto->path;
+				echo json_encode($json);
+
+				// close the transaction
+				TTransaction::close();
+			} catch (Exception $e) // in case of exception
+			{
+				// shows the exception error message
+				$json['data'][]['video'] = $e->getMessage();
+				echo json_encode($json);
+
+				// undo all pending operations
+				TTransaction::rollback();
+			}
+		} else {
+			$json['data'][]['video'] = "Error desconocido.";
+			echo json_encode($json);
+		}
+
+		exit;
+	}
 }
