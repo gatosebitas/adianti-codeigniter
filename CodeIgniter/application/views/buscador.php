@@ -234,13 +234,13 @@
 											</a>
 										</span>
 
-										<span class="tag is-white">
+										<!-- <span class="tag is-white">
 
 											<a href="#popup2">Ver videos</a>
-										</span>
+										</span> -->
 										<span class="tag is-white">
 											<a onclick="alternativo(<?php echo $proyecto->id; ?>);">
-												Alternativo
+												Ver videos
 											</a>
 										</span>
 
@@ -378,6 +378,7 @@
 		function cerrar() {
 			overlay.classList.remove('active');
 			popup.classList.remove('active');
+			$(imgpub).html('');
 		}
 
 		function final(id) {
@@ -433,9 +434,7 @@
 				url: site, //archivo que recibe la peticion
 				type: 'post', //método de envio
 				dataType: 'json',
-				beforeSend: function() {
-					$(resultado).html('<progress class="progress is-danger" max="100"></progress>');
-				},
+				
 				success: function(response) {
 					//una vez que el archivo recibe el request lo procesa y lo devuelve
 					//$(resultado).html("Procesando, espere por favor...");
@@ -446,9 +445,9 @@
 					},
 					200: function(response) {
 						//location.reload();
-						$(resultado).html("Procesando, espere por favor...");
+						
 						$.each(response.data, function(index, elemento) {
-							resp = resp + '<div class="mySlides fade"><video width="640" height="480" controls><source  src="http://localhost/proyectos_vri/uploads/' + response.data[index].video + '" type="video/mp4"> </video></div>';
+							resp = resp + '<div class="mySlides fade"><video width="640" height="480" autoplay controls controlsList="nodownload"><source  src="http://localhost/proyectos_vri/uploads/' + response.data[index].video + '" type="video/mp4"> </video></div>';
 
 						});
 						$(imgpub).html(resp);
@@ -465,6 +464,7 @@
 				location.hash = '';
 			}
 			cerrar();
+			
 		}
 	</script>
 	<script>
@@ -483,13 +483,7 @@
 				$(imgpub).html('');
 			}
 		});
-		// var modal = document.querySelector('#popup');
-		// // Handle click on the modal container
-		// modal.addEventListener('click', modalClose, false);
-		// // Prevent event bubbling if click occurred within modal content body
-		// modal.children[0].addEventListener('click', function(e) {
-		// 	e.stopPropagation();
-		// }, false);
+		
 		var modal2 = document.querySelector('#overlay');
 		// Handle click on the modal container
 		modal2.addEventListener('click', modalClose, false);
