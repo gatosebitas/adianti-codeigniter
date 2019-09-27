@@ -133,6 +133,7 @@ class Welcome extends CI_Controller
 	 */
 	public function onReload($param = NULL)
 	{
+		
 		try {
 			// open a transaction with database 'database'
 			TTransaction::open('database');
