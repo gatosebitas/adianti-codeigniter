@@ -40,7 +40,7 @@
 
 						<div class="field has-addons has-addons-centered">
 							<div class="control">
-								<input class="input" name="titulo" value="<?php echo TSession::getValue('ProyUnsa_integrantes'); ?>" type="text" placeholder="Nombre o título de proyecto">
+								<input class="input" name="titulo" value="<?php echo TSession::getValue('ProyUnsa_titulo'); ?>" type="text" placeholder="Nombre o título de proyecto">
 							</div>
 							<div class="control">
 								<input type="submit" value="Buscar" class="button is-info" />
@@ -66,196 +66,33 @@
 									</option>
 								<?php
 								}
-
 								?>
 							</select>
 						</div>
 
-						<p class="menu-label">
-							Estado
-						</p>
-
-						<?php $estado = TSession::getValue('ProyUnsa_estado'); //?TSession::getValue('ProyUnsa_estado'):'NULL';
-						?>
-
-						<div class="field">
-							<?php $checked = ($estado == "A") ? 'checked="checked"' : ''; ?>
-							<input class="is-checkradio" id="estado1" type="radio" value="A" name="estado" <?php echo $checked; ?>>
-							<label for="estado1">
-								Todos
-							</label>
-						</div>
-
-						<div class="field">
-							<?php $checked = ($estado == "E") ? 'checked="checked"' : ''; ?>
-							<input class="is-checkradio" id="estado2" type="radio" value="E" name="estado" <?php echo $checked; ?>>
-							<label for="estado2">
-								En ejecución
-							</label>
-						</div>
-
-						<div class="field">
-							<?php $checked = ($estado == "R") ? 'checked="checked"' : ''; ?>
-							<input class="is-checkradio" id="estado3" type="radio" value="R" name="estado" <?php echo $checked; ?>>
-							<label for="estado3">
-								Registrado
-							</label>
-						</div>
-
-						<div class="field">
-							<?php $checked = ($estado == "C") ? 'checked="checked"' : ''; ?>
-							<input class="is-checkradio" id="estado4" type="radio" value="C" name="estado" <?php echo $checked; ?>>
-							<label for="estado4">
-								Finalizado
-							</label>
-						</div>
-
-						<p class="menu-label">
-							Esquema financiero
-						</p>
 
 
 
-						<?php
 
 
-						?>
-
-						<div class="select is-multiple is-fullwidth">
-
-							<select id="my-select" class="estiloselect" multiple style="max-width: 600px; y height: auto;" name="convocatoria[]">
-
-								<?php
-
-								$selects = TSession::getValue('ProyUnsa_id_convocatoria') ? TSession::getValue('ProyUnsa_id_convocatoria') : array();
-
-								foreach ($esquemas as $key => $convocatorias) : ?>
 
 
-									<optgroup label="<?php echo explode('..', $key)[1]; ?>">
 
-										<?php echo $convocatorias ?>
-
-										<?php
-											foreach ($convocatorias as $id_convocatoria => $nomb_conv) : ?>
-											<?php $selected = (in_array($id_convocatoria, $selects)) ? 'selected="selected"' : ""; ?>
-											<option value="<?php echo $id_convocatoria ?>" <?php echo $selected; ?>>
-												<?php echo $nomb_conv ?>
-											</option>
-
-										<?php endforeach; ?>
-
-									</optgroup>
-
-								<?php endforeach; ?>
-
-
-							</select>
-							<script type="text/javascript">
-								$(function() {
-									// initialize sol
-									$('#my-select').searchableOptionList({
-										showSelectionBelowList: true,
-										maxHeight: '250px',
-										texts: {
-											noItemsAvailable: 'No hay coincidencias',
-											selectAll: 'Todos',
-											selectNone: 'Ninguno',
-											searchplaceholder: 'Clic aquí para buscar seleccionar la convocatoria'
-										}
-									});
+						<script type="text/javascript">
+							$(function() {
+								// initialize sol
+								$('#my-select').searchableOptionList({
+									showSelectionBelowList: true,
+									maxHeight: '250px',
+									texts: {
+										noItemsAvailable: 'No hay coincidencias',
+										selectAll: 'Todos',
+										selectNone: 'Ninguno',
+										searchplaceholder: 'Clic aquí para buscar seleccionar la convocatoria'
+									}
 								});
-							</script>
-						</div>
-
-
-
-
-
-						<p class="menu-label">
-							Área de investigación
-						</p>
-
-
-						<?php
-
-						$areas = array();
-						$areas[0] = "Todas las áreas";
-						$areas[56] = "Programa de Ciencias Básicas";
-						$areas[56] = "Programa de Ciencias Básicas";
-						$areas[1] = "Programa de Valorización de la Biodiversidad - VALBIO";
-						$areas[87] = "Programa de Biotecnología";
-						$areas[107] = "Programa de Tecnologías de la Información y Comunicación";
-						$areas[137] = "Otras áreas";
-
-						$selects = TSession::getValue('ProyUnsa_id_area_prioritaria') ? TSession::getValue('ProyUnsa_id_area_prioritaria') : array();
-						?>
-
-						<?php
-						foreach ($areas as $key => $nombre) : ?>
-
-							<?php $selected = (in_array($key, $selects)) ? 'checked="checked"' : "" ?>
-
-
-							<div class="field">
-								<input class="is-checkradio" id="area_<?php echo $key ?>" type="checkbox" name="area[]" value="<?php echo $key ?>" <?php echo $selected ?>>
-								<label for="area_<?php echo $key ?>">
-									<?php echo $nombre ?>
-								</label>
-							</div>
-
-						<?php endforeach; ?>
-
-
-						<!--
-
-							<p class="menu-label">
-							Convocatoria
-							</p>
-							<div class="select is-multiple is-fullwidth">
-							<select class="estiloselect" multiple style="max-width: 600px; y height: auto;"  name="convocatorssia[]">
-							<option value="0">
-							Todas las convocatorias
-							</option>
-
-							<?php
-							try {
-								TTransaction::open('database'); // open transaction
-
-								// load using repository
-								$repository = new TRepository('viewConvocatoria');
-								$items      = $repository->load();
-
-								$selects    = TSession::getValue('ProyUnsa_id_convocatoria') ? TSession::getValue('ProyUnsa_id_convocatoria') : array();
-
-								foreach ($items as $item) {
-									$selected = (in_array($item->id_convocatoria, $selects)) ? 'selected="selected"' : "";
-									echo '<option value="' . $item->id_convocatoria . '" ' . $selected . '>' . $item->nomb_conv . '</option>';
-									// $customer->id . ' - ' . $customer->name . ' < br > ';
-								}
-
-								TTransaction::close(); // close transaction
-							} catch (Exception $e) {
-								new TMessage('error', $e->getMessage());
-							}
-
-							?>
-							</select>
-
-							<style>
-
-							select.estiloselect option
-							{
-							/*es aquí donde esta todo el desarrollo principal*/
-							word-wrap: break-word; /* Declara que el texto deberá ser Wrap Break en Word.*/
-							white-space: -moz-pre-wrap; /* lo mismo que lo anterior pero para Firefox*/
-							white-space: pre-wrap;  /* lo mismo que lo anterior pero para el resto de los navegadores.*/
-							/* width:300px; /*Se establece un ancho en especifico*/
-							}
-
-							</style>
-							</div>-->
-
+							});
+						</script>
 
 					</aside>
 
@@ -293,24 +130,24 @@
 								<select name="order" onchange="this.form.submit()">
 
 									<?php echo  TSession::getValue('ProyUnsa_order'); ?>
-									<?php $select = ("principal/asc" == TSession::getValue('ProyUnsa_order')) ? 'selected="selected"' : ""; ?>
-									<option value="principal/asc" <?php echo $select ?>>
-										Ordenado por investigador principal (A-Z)
+									<?php $select = ("description/asc" == TSession::getValue('ProyUnsa_order')) ? 'selected="selected"' : ""; ?>
+									<option value="description/asc" <?php echo $select ?>>
+										Ordenado por el orden de publicacion (A-Z)
 									</option>
 
-									<?php $select = ("principal/desc" == TSession::getValue('ProyUnsa_order')) ? 'selected="selected"' : ""; ?>
-									<option value="principal/desc" <?php echo $select ?>>
-										Ordenado por investigador principal (Z-A)
+									<?php $select = ("description/desc" == TSession::getValue('ProyUnsa_order')) ? 'selected="selected"' : ""; ?>
+									<option value="description/desc" <?php echo $select ?>>
+										Ordenado por el orden de publicacion (Z-A)
 									</option>
 
 									<?php $select = ("title/asc" == TSession::getValue('ProyUnsa_order')) ? 'selected="selected"' : ""; ?>
 									<option value="title/asc" <?php echo $select ?>>
-										Ordenado por titulo de proyecto (A-Z)
+										Ordenado por titulo de publicación (A-Z)
 									</option>
 
 									<?php $select = ("title/desc" == TSession::getValue('ProyUnsa_order')) ? 'selected="selected"' : ""; ?>
 									<option value="title/desc" <?php echo $select ?>>
-										Ordenado por titulo de proyecto (Z-A)
+										Ordenado por titulo de publicación (Z-A)
 									</option>
 								</select>
 							</div>
@@ -327,7 +164,6 @@
 								"id": id
 							};
 							var site = "<?php echo site_url('Welcome/cargar_imagenes/'); ?>" + id;
-
 							$.ajax({
 								data: parametros, //datos que se envian a traves de ajax
 								url: site, //archivo que recibe la peticion
@@ -344,15 +180,12 @@
 									500: function(response) {
 										$(resultado).html("Error 500");
 									},
-
 									200: function(response) {
 										//location.reload();
 										$(resultado).html("Procesando, espere por favor...");
-
 										$.each(response.data, function(index, elemento) {
 											$(resultado).html('<p class=" notification has-text-justified">' + elemento.resumen + ' </p>');
 										});
-
 									}
 								}
 							});
@@ -365,7 +198,6 @@
 								"id": id
 							};
 							var site = "<?php echo site_url('Welcome/cargar_imagenes/'); ?>" + id;
-
 							$(imgpub).html("id");
 						}
 					</script>
@@ -387,7 +219,7 @@
 										</strong>
 
 										<div class="is-size-7 has-text-weight-light">
-											Área: <?php echo $proyecto->nomb_areapri ?>. Convocatoria: <?php echo $proyecto->nomb_conv ?>
+											Descripcion: <?php echo $proyecto->description ?>. Convocatoria: <?php echo $proyecto->nomb_conv ?>
 										</div>
 										<div class="is-capitalized">
 											<small class="is-italic">
@@ -445,7 +277,6 @@
 
 						<?php
 						$total_pages = ceil($param['rows'] / $param['limit']);
-
 						$previous    = ($param['page'] - 1);
 						$disabled    = ($param['page'] * 1 == 1) ? 'disabled' : 'href="' . site_url('Welcome/index/') . $previous . '"';
 						?>
@@ -529,18 +360,11 @@
 			overlay = document.getElementById('overlay'),
 			popup = document.getElementById('popup'),
 			btnCerrarPopup = document.getElementById('btn-cerrar-popup');
-
 		btnAbrirPopup.addEventListener('click', function() {
 			// overlay.classList.add('active');
 			// popup.classList.add('active');
 			//get_imagenes(17);
-
-
-
-
-
 		});
-
 		btnCerrarPopup.addEventListener('click', function(e) {
 			e.preventDefault();
 			overlay.classList.remove('active');
@@ -553,10 +377,7 @@
 		}
 
 		function final(id) {
-
-
 			//$(imgpub).html('adlflkfdfjd');
-
 			var resultado = "#response_" + id;
 			var parametros = {
 				"id": id
@@ -579,11 +400,9 @@
 					500: function(response) {
 						$(resultado).html("Error 500");
 					},
-
 					200: function(response) {
 						//location.reload();
 						$(resultado).html("Procesando, espere por favor...");
-
 						$.each(response.data, function(index, elemento) {
 							resp = resp + '<div class="mySlides fade"><img  src="http://localhost/proyectos_vri/uploads/' + response.data[index].resumen + '"> </div>';
 						});
@@ -594,8 +413,6 @@
 					}
 				}
 			});
-
-
 		}
 
 		function modalClose() {
@@ -603,7 +420,6 @@
 				location.hash = '';
 			}
 			cerrar();
-
 		}
 	</script>
 	<script>
@@ -611,10 +427,8 @@
 		var overlay = document.getElementById('overlay'),
 			popup = document.getElementById('popup');
 		popup2 = document.getElementById('popup2');
-
 		document.addEventListener('keyup', function(e) {
 			if (e.keyCode == 27) {
-
 				overlay.classList.remove('active');
 				popup.classList.remove('active');
 				if (location.hash == '#popup2') {
@@ -622,40 +436,27 @@
 				}
 			}
 		});
-
-		var modal = document.querySelector('#popup');
-
-		// Handle click on the modal container
-		modal.addEventListener('click', modalClose, false);
-
-		// Prevent event bubbling if click occurred within modal content body
-		modal.children[0].addEventListener('click', function(e) {
-			e.stopPropagation();
-		}, false);
-
+		// var modal = document.querySelector('#popup');
+		// // Handle click on the modal container
+		// modal.addEventListener('click', modalClose, false);
+		// // Prevent event bubbling if click occurred within modal content body
+		// modal.children[0].addEventListener('click', function(e) {
+		// 	e.stopPropagation();
+		// }, false);
 		var modal2 = document.querySelector('#overlay');
-
 		// Handle click on the modal container
 		modal2.addEventListener('click', modalClose, false);
-
 		// Prevent event bubbling if click occurred within modal content body
 		modal2.children[0].addEventListener('click', function(e) {
 			e.stopPropagation();
 		}, false);
-
 		var modal3 = document.querySelector('#popup2');
-
 		// Handle click on the modal container
 		modal3.addEventListener('click', modalClose, false);
-
 		// Prevent event bubbling if click occurred within modal content body
 		modal3.children[0].addEventListener('click', function(e) {
 			e.stopPropagation();
 		}, false);
-
-
-
-
 		var slideIndex = 1;
 		showSlides(slideIndex);
 
